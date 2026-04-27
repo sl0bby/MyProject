@@ -323,7 +323,6 @@ body {
 }
 .page-btn.active-page { background: #e67e22; color: white; }
 
-/* СТРАНИЦА РЕЦЕПТА - ФИКСИРОВАННАЯ ШИРИНА */
 .detail-container {
     max-width: 960px;
     width: 100%;
