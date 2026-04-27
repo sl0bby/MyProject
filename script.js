@@ -1043,7 +1043,6 @@ const authButtons = document.getElementById("authButtons");
 const userWelcome = document.getElementById("userWelcome");
 const userNameSpan = document.getElementById("userName");
 
-// ---------- Вспомогательные функции ----------
 function saveUsers() { localStorage.setItem("food_users", JSON.stringify(users)); }
 function saveCurrentUser() { localStorage.setItem("food_currentUser", JSON.stringify(currentUser)); }
 function saveFavs() { localStorage.setItem("food_favs", JSON.stringify(favorites)); }
@@ -1115,7 +1114,7 @@ function renderFiltersPanel() {
                 <input type="text" id="searchInput" placeholder="Поиск рецептов..." value="${searchText}">
             </div>
             <div class="search-button">
-                <button id="searchBtn" class="search-btn">🔍 Искать рецепты</button>
+                <button id="searchBtn" class="search-btn">🔍 Искать</button>
             </div>
         </div>
     `;
@@ -1130,7 +1129,7 @@ function renderCatalog() {
     `;
 
     if (!hasSearched) {
-        html += `<div class="empty-state">🔎 Выберите кухню, тип блюда или введите название и нажмите «Искать»</div>`;
+        html += `<div class="empty-state"> Выберите кухню, тип блюда или введите название и нажмите «Искать»</div>`;
         app.innerHTML = html;
     } else {
         let filtered = getFilteredRecipes();
@@ -1260,7 +1259,15 @@ function showRecipeDetail(id) {
     starsSpans.forEach(span => {
         span.addEventListener("click", () => {
             selectedStars = parseInt(span.getAttribute("data-star"));
-            starsSpans.forEach((s, idx) => s.textContent = idx < selectedStars ? "★" : "☆");
+            starsSpans.forEach((s, idx) => {
+                if (idx < selectedStars) {
+                    s.textContent = "★";
+                    s.classList.add("filled");
+                } else {
+                    s.textContent = "☆";
+                    s.classList.remove("filled");
+                }
+            });
         });
     });
     document.getElementById("submitReviewBtn").addEventListener("click", () => {

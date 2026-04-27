@@ -95,7 +95,6 @@ body {
     padding: 0 30px;
     min-height: 65vh;
 }
-/* фильтры двойные */
 .filters-panel {
     background: white;
     border-radius: 40px;
@@ -308,7 +307,16 @@ textarea {
     cursor: pointer;
     margin: 10px 0;
 }
-.star-rating span { color: #ddd; transition: 0.1s; }
+.star-rating span {
+    font-size: 28px;
+    cursor: pointer;
+    margin: 0 2px;
+    color: #ddd;
+    transition: 0.1s;
+}
+.star-rating span.filled {
+    color: #e67e22;
+}
 .star-rating span.selected { color: #f5b042; }
 .modal {
     display: none;
@@ -376,4 +384,16 @@ textarea {
     .mobile-menu-btn { display: block; }
     .header-container { padding: 12px 20px; }
     .detail-content { padding: 20px; }
+}
+
+.footer {
+    text-align: center;
+    background: #2c241a;
+    color: #cfc3b4;
+    padding: 30px;
+    margin-top: 60px;
+}
+.footer-logo {
+    color: #e67e22;
+    font-weight: 700;
 }
