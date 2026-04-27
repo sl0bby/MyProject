@@ -1125,6 +1125,14 @@ function renderCatalog() {
         <div class="filters-wrapper">
             <div class="hero-text">Рецепты бай — просто, вкусно и доступно!</div>
             ${renderFiltersPanel()}
+            <div class="random-help-block">
+                <p class="random-help-text">🤔 Не можешь выбрать, какое блюдо приготовить? Попробуй функцию</p>
+                <button id="randomRecipeBtn" class="random-btn">🎲 Мне повезёт</button>
+                <button id="infoRandomBtn" class="info-btn" title="Что это?">?</button>
+                <div id="infoTooltip" class="tooltip" style="display: none;">
+                    ⚡ Кнопка «Мне повезёт» открывает случайный рецепт из всех доступных. Идеально, когда не знаешь, что приготовить!
+                </div>
+            </div>
         </div>
     `;
 
@@ -1210,6 +1218,37 @@ function renderCatalog() {
             hasSearched = true;
             currentPageNum = 1;
             renderCatalog();
+        });
+    }
+
+    // --- Кнопка "Мне повезёт" ---
+    const randomBtn = document.getElementById("randomRecipeBtn");
+    if (randomBtn) {
+        randomBtn.addEventListener("click", () => {
+            if (recipes.length === 0) return;
+            const randomIndex = Math.floor(Math.random() * recipes.length);
+            const randomRecipe = recipes[randomIndex];
+            showRecipeDetail(randomRecipe.id);
+            window.history.pushState({}, "", `#recipe-${randomRecipe.id}`);
+        });
+    }
+    // --- Кнопка "?" с подсказкой ---
+    const infoBtn = document.getElementById("infoRandomBtn");
+    const tooltip = document.getElementById("infoTooltip");
+    if (infoBtn && tooltip) {
+        let tooltipTimeout;
+        infoBtn.addEventListener("mouseenter", () => {
+            tooltip.style.display = "block";
+            const rect = infoBtn.getBoundingClientRect();
+            tooltip.style.left = `${rect.left + window.scrollX}px`;
+            tooltip.style.top = `${rect.bottom + window.scrollY + 5}px`;
+            tooltipTimeout = setTimeout(() => {
+                tooltip.style.display = "none";
+            }, 4000);
+        });
+        infoBtn.addEventListener("mouseleave", () => {
+            clearTimeout(tooltipTimeout);
+            tooltip.style.display = "none";
         });
     }
 }
@@ -1428,6 +1467,27 @@ function handleHash() {
     else currentPage = "catalog";
     renderApp();
 }
+
+// ---------- ТЁМНАЯ ТЕМА ----------
+const themeToggle = document.getElementById("themeToggle");
+if (themeToggle) {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+        document.body.classList.add("dark-mode");
+        themeToggle.textContent = "☀️";
+    }
+    themeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+        if (document.body.classList.contains("dark-mode")) {
+            localStorage.setItem("theme", "dark");
+            themeToggle.textContent = "☀️";
+        } else {
+            localStorage.setItem("theme", "light");
+            themeToggle.textContent = "🌙";
+        }
+    });
+}
+
 window.addEventListener("popstate", handleHash);
 handleHash();
 updateAuthUI();
